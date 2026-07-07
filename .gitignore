@@ -1,0 +1,17 @@
+# secrets — never commit
+backend/.env
+
+# Python
+backend/venv/
+**/__pycache__/
+*.pyc
+
+# Node
+frontend/node_modules/
+frontend/dist/
+
+# handoff package (zip is a build artifact, not source)
+handoff/
+
+# OS
+.DS_Store

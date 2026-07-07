@@ -1,0 +1,26 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+:root {
+  color-scheme: light;
+}
+:root.dark {
+  color-scheme: dark;
+}
+
+body {
+  margin: 0;
+  min-width: 320px;
+  min-height: 100vh;
+  font-family: system-ui, -apple-system, "Segoe UI", sans-serif;
+  @apply bg-page-light text-ink-primary-light dark:bg-page-dark dark:text-ink-primary-dark;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+::selection {
+  @apply bg-brand/20;
+}

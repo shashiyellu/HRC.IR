@@ -1,0 +1,61 @@
+RESUME MATCHER — HOW TO RUN
+============================
+
+This tool compares a job description against candidate resumes and gives
+each candidate a match score with matched/unmatched skills. It runs on
+your own computer — nothing is uploaded to any shared server.
+
+ONE-TIME SETUP
+---------------
+1. If you don't already have Python installed:
+   - Go to https://www.python.org/downloads/
+   - Download and run the installer.
+   - IMPORTANT (Windows): on the very first install screen, check the box
+     "Add python.exe to PATH" before clicking Install.
+   - Mac: Python usually comes preinstalled; if not, the site above works too.
+
+That's the only thing you need to install. Everything else is handled
+automatically the first time you run the app.
+
+EVERY TIME YOU WANT TO USE IT
+-------------------------------
+Windows:
+   Double-click "start.bat" in this folder.
+
+Mac / Linux:
+   Double-click "start.sh" (or open Terminal in this folder and run
+   ./start.sh).
+
+The first time you run it, it will take a minute or two to set itself up
+— you'll see some text scrolling in a black window, that's normal.
+After that, a browser tab will open automatically at:
+
+   http://localhost:8000
+
+If the page shows an error the moment it opens, just wait a few seconds
+and refresh — the server is still starting up.
+
+WHILE USING THE APP
+---------------------
+- Keep the black "server" window open in the background. Closing it stops
+  the app. You can minimize it.
+- To use the app again later, just re-run start.bat / start.sh — setup
+  won't repeat, it'll start instantly.
+- To fully quit, close the black server window (or press Ctrl+C in it).
+
+USING THE APP
+---------------
+1. Paste the job description, or drag a PDF/DOCX/TXT file onto the box.
+2. Drag in as many candidate resumes as you like (PDF/DOCX/TXT).
+3. Click "Analyze matches."
+4. Candidates are ranked by match %, with matched/unmatched skills,
+   strengths, and concerns for each one.
+
+TROUBLESHOOTING
+------------------
+- "Python was not found" — install Python (see above), making sure to
+  check "Add python.exe to PATH" on Windows, then try again.
+- Nothing opens in the browser — manually open a browser and go to
+  http://localhost:8000
+- "Analysis failed" on every resume — the shared API key may have run out
+  of credit or hit a limit; contact whoever gave you this tool.
