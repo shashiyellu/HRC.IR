@@ -1,13 +1,14 @@
 import asyncio
 import json
 
-import anthropic
+from google import genai
+from google.genai import types
 
 from . import config
 
-_client = anthropic.AsyncAnthropic(api_key=config.ANTHROPIC_API_KEY)
+_client = genai.Client(api_key=config.GEMINI_API_KEY)
 
-_MAX_CONCURRENCY = 5
+_MAX_CONCURRENCY = 3
 
 _RESULT_SCHEMA = {
     "type": "object",
@@ -64,7 +65,6 @@ _RESULT_SCHEMA = {
         "experience_fit",
         "summary",
     ],
-    "additionalProperties": False,
 }
 
 _SYSTEM_PROMPT = """You are an expert technical recruiter with deep experience screening resumes against job descriptions across many industries.
@@ -92,23 +92,20 @@ Evaluate this candidate's resume against the job description above."""
 
 
 async def score_resume(jd_text: str, resume_text: str) -> dict:
-    response = await _client.messages.create(
-        model=config.CLAUDE_MODEL,
-        max_tokens=16000,
-        thinking={"type": "adaptive"},
-        output_config={
-            "effort": "high",
-            "format": {"type": "json_schema", "schema": _RESULT_SCHEMA},
-        },
-        system=_SYSTEM_PROMPT,
-        messages=[{"role": "user", "content": _build_user_prompt(jd_text, resume_text)}],
+    response = await _client.aio.models.generate_content(
+        model=config.GEMINI_MODEL,
+        contents=_build_user_prompt(jd_text, resume_text),
+        config=types.GenerateContentConfig(
+            system_instruction=_SYSTEM_PROMPT,
+            response_mime_type="application/json",
+            response_json_schema=_RESULT_SCHEMA,
+        ),
     )
 
-    text_block = next((b for b in response.content if b.type == "text"), None)
-    if text_block is None:
-        raise ValueError("Model returned no text content (possible refusal)")
+    if not response.text:
+        raise ValueError("Model returned no text content (possible safety block)")
 
-    return json.loads(text_block.text)
+    return json.loads(response.text)
 
 
 async def score_resumes(jd_text: str, resumes: list[tuple[str, str]]) -> list[dict]:

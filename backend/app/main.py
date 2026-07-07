@@ -53,7 +53,7 @@ async def require_password(request: Request, call_next):
 
 @app.get("/api/health")
 async def health():
-    return {"status": "ok", "model": config.CLAUDE_MODEL, "api_key_configured": bool(config.ANTHROPIC_API_KEY)}
+    return {"status": "ok", "model": config.GEMINI_MODEL, "api_key_configured": bool(config.GEMINI_API_KEY)}
 
 
 @app.post("/api/extract-text", response_model=ExtractTextResponse)
@@ -74,10 +74,10 @@ async def match_endpoint(
         raise HTTPException(status_code=400, detail="Job description text is empty.")
     if not files:
         raise HTTPException(status_code=400, detail="Upload at least one resume.")
-    if not config.ANTHROPIC_API_KEY:
+    if not config.GEMINI_API_KEY:
         raise HTTPException(
             status_code=500,
-            detail="ANTHROPIC_API_KEY is not configured on the server. Set it in backend/.env.",
+            detail="GEMINI_API_KEY is not configured on the server. Set it in backend/.env.",
         )
 
     resumes: list[tuple[str, str]] = []
